@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input class="word" type="text" placeholder="단어" />
+    <input class="meaning" type="text" placeholder="뜻" />
+    <button class="click-btn">등록</button>
+
+    <ul class="word-list"></ul>
+    <script>
+      const word = document.querySelector('.word');
+      const meaning = document.querySelector('.meaning');
+      const clickBtn = document.querySelector('.click-btn');
+      const wordList = document.querySelector('.word-list');
+      let count = 0;
+
+      function handleInputData() {
+        const inputData = {
+          word: word.value,
+          meaning: meaning.value
+        };
+        return inputData;
+      }
+
+      function initInputData() {
+        word.value = '';
+        meaning.value = '';
+      }
+
+      function displayWordList(data) {
+        const test = document.createElement('li');
+        const word = document.createElement('span');
+        const meaning = document.createElement('span');
+        word.innerText = data.word;
+        meaning.innerText = data.meaning;
+        test.appendChild(word);
+        test.appendChild(meaning);
+        wordList.appendChild(test);
+      }
+
+      function loadWordList() {
+        for (let i = 0; i < window.localStorage.length; i++) {
+          const data = JSON.parse(window.localStorage.getItem(i));
+          console.log(data);
+          displayWordList(data);
+        }
+      }
+
+      function init() {
+        const word = handleInputData();
+        saveInputWord(word);
+        initInputData();
+        displayWordList(word);
+        count++;
+      }
+
+      function saveInputWord(word) {
+        window.localStorage.setItem(count, word);
+      }
+
+      clickBtn.addEventListener('click', init);
+      loadWordList();
+    </script>
+  </body>
+</html>
